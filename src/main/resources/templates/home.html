@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+    <head>
+        <title>홈화면</title>
+    </head>
+    <div layout:fragment="content">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">👍</th>
+                    <th scope="col">Hit</th>
+                    <th scope="col">작성 날짜</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="post : ${posts}">
+                    <td><a href="post_detail.html" th:href="@{|/post/${post.postId}|}" th:text="${post.postId}">1</a></td>
+                    <td><a href="post_detail.html" th:href="@{|/post/${post.postId}|}" th:text="${post.postTitle}">제목</a></td>
+                    <td th:text="${post.username}">작성자</td>
+                    <td th:text="${post.postLike}">0</td>
+                    <td th:text="${post.postHit}">0</td>
+                    <td th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
