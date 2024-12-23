@@ -1,18 +1,22 @@
 package com.community.animal.user.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.community.animal.post.domain.Post;
+import com.community.animal.post.dto.PostResponse;
 import com.community.animal.user.domain.User;
 import com.community.animal.user.dto.LoginForm;
 import com.community.animal.user.dto.JoinForm;
+import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.service.UserService;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -81,5 +85,32 @@ public class UserController {
 			session.invalidate();
 		}
 		return "redirect:/post";
+	}
+
+	@GetMapping("/profile")
+	public String profile(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("loginUser");
+		model.addAttribute("user", user);
+		return "user/user_detail";
+	}
+
+	@GetMapping("/modify/{id}")
+	public String updateForm(@PathVariable Long id, Model model) {
+		User findUser = userService.findUserById(id);
+		UserUpdateForm updateForm = userService.toDetailUserResponse(findUser);
+		model.addAttribute("user", updateForm);
+		return "user/user_update";
+	}
+
+	@PostMapping("/modify/{id}")
+	public String update(HttpServletRequest request, @PathVariable Long id, @ModelAttribute UserUpdateForm updateForm, Model model) {
+		userService.update(id, updateForm);
+		User user = userService.findUserById(id);
+
+		HttpSession session = request.getSession();
+		session.setAttribute(SessionConst.LOGIN_MEMBER, user);
+
+		return "redirect:/user/profile";
 	}
 }

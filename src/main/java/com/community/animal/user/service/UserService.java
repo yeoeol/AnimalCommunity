@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.community.animal.user.domain.User;
+import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,22 @@ public class UserService {
 	public User findUserById(Long userId) {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+	}
+
+	public UserUpdateForm toDetailUserResponse(User user) {
+		return UserUpdateForm.builder()
+			.userId(user.getUserId())
+			.username(user.getUsername())
+			.email(user.getEmail())
+			.password(user.getPassword())
+			.build();
+	}
+
+	@Transactional
+	public void update(Long id, UserUpdateForm updateForm) {
+		User user = findUserById(id);
+		user.setUsername(updateForm.getUsername());
+		user.setEmail(updateForm.getEmail());
+		user.setPassword(updateForm.getPassword());
 	}
 }
