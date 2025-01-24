@@ -15,10 +15,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter
+@Entity
 public class User {
 
 	@Id @GeneratedValue
@@ -26,11 +26,21 @@ public class User {
 	private Long userId;
 
 	private String username;
-	private String email;
 	private String password;
+	private String email;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
 	private LocalDateTime createDate;
+
+	@Builder
+	public User(Long userId, String username, String password, String email, Role role, LocalDateTime createDate) {
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.createDate = createDate;
+	}
 }
