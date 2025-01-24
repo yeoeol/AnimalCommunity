@@ -77,10 +77,8 @@ public class PostController {
 	}
 
 	@PostMapping("/modify/{id}")
-	public String update(@PathVariable Long id, @ModelAttribute PostResponse postResponse, Model model) {
-		postService.update(id, postResponse);
-		Post post = postService.findPostById(id);
-		model.addAttribute("post", post);
+	public String update(@PathVariable Long id, @ModelAttribute PostRequest postRequest, Model model) {
+		postService.update(id, postRequest);
 		return "redirect:/post/"+id;
 	}
 

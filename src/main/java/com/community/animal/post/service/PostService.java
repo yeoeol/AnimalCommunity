@@ -50,15 +50,13 @@ public class PostService {
 	@Transactional
 	public void updateHits(Long id) {
 		Post post = findPostById(id);
-		post.setPostHit(post.getPostHit()+1);
+		post.addPostHit();
 	}
 
 	@Transactional
-	public void update(Long id, PostResponse postResponse) {
+	public void update(Long id, PostRequest dto) {
 		Post post = findPostById(id);
-		post.setPostTitle(postResponse.getPostTitle());
-		post.setPostContent(postResponse.getPostContent());
-		post.setPostCategory(postResponse.getPostCategory());
+		post.update(dto);
 	}
 
 	@Transactional
