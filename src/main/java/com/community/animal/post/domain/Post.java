@@ -49,21 +49,4 @@ public class Post {
 	@CreationTimestamp
 	private LocalDateTime regDate;
 
-	@Builder
-	public Post(Long postId, String postTitle, String postContent, Long postLike, Long postHit,
-		PostCategory postCategory, User user, LocalDateTime regDate) {
-
-		this.postId = postId;
-		this.postTitle = postTitle;
-		this.postContent = postContent;
-		this.postLike = postLike;
-		this.postHit = postHit;
-		this.postCategory = postCategory;
-		this.user = user;
-		this.regDate = regDate;
-	}
-
-	// public void addUser(User user) {
-	// 	this.user = user;
-	// }
 }

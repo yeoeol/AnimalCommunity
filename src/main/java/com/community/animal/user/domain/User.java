@@ -33,13 +33,4 @@ public class User {
 	private Role role;
 
 	private LocalDateTime createDate;
-
-	@Builder
-	public User(String username, String email, String password) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
-		this.createDate = LocalDateTime.now();
-		this.role = Role.USER;
-	}
 }

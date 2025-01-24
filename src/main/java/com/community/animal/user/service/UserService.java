@@ -1,12 +1,16 @@
 package com.community.animal.user.service;
 
-import java.util.List;
-import java.util.Optional;
 
+import java.util.List;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.community.animal.user.domain.User;
+import com.community.animal.user.dto.CustomUserDetails;
 import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.repository.UserRepository;
 
@@ -15,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserService {
+public class UserService implements UserDetailsService {
 
 	private final UserRepository userRepository;
 
@@ -60,5 +64,11 @@ public class UserService {
 		user.setUsername(updateForm.getUsername());
 		user.setEmail(updateForm.getEmail());
 		user.setPassword(updateForm.getPassword());
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username).orElseThrow();
+		return new CustomUserDetails(user);
 	}
 }
