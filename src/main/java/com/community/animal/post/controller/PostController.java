@@ -82,7 +82,7 @@ public class PostController {
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable Long id) {
 		// 접근 권한 확인
-		if (!postService.isAccess(id)) {
+		if (postService.isAccess(id)) {
 			postService.delete(id);
 		}
 
