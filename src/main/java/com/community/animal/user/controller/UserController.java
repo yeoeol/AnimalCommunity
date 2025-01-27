@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.community.animal.post.domain.Post;
-import com.community.animal.post.dto.PostResponse;
 import com.community.animal.user.domain.User;
 import com.community.animal.user.dto.LoginForm;
 import com.community.animal.user.dto.JoinForm;
@@ -19,8 +16,6 @@ import com.community.animal.user.dto.UserProfileDTO;
 import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -107,7 +102,7 @@ public class UserController {
 	}
 
 	@PostMapping("/user/modify/{id}")
-	public String update(@PathVariable Long id, @ModelAttribute UserUpdateForm updateForm, Model model) {
+	public String update(@PathVariable Long id, @ModelAttribute UserUpdateForm updateForm) {
 		// 접근 권한 확인
 		if (!userService.isAccess(id)) {
 			return "redirect:/login";

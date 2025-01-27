@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.community.animal.post.domain.Post;
-import com.community.animal.post.dto.PostRequest;
 import com.community.animal.user.dto.UserUpdateForm;
 
 import jakarta.persistence.Column;
@@ -22,7 +20,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)

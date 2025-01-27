@@ -5,10 +5,7 @@ import java.time.LocalDateTime;
 import com.community.animal.post.domain.Post;
 import com.community.animal.post.domain.PostCategory;
 
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 public class PostResponse {

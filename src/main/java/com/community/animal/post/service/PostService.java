@@ -1,7 +1,6 @@
 package com.community.animal.post.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.community.animal.post.domain.Post;
 import com.community.animal.post.dto.PostRequest;
-import com.community.animal.post.dto.PostResponse;
 import com.community.animal.post.repository.PostRepository;
 import com.community.animal.user.domain.User;
 import com.community.animal.user.repository.UserRepository;

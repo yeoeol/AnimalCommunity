@@ -1,9 +1,7 @@
 package com.community.animal.user.dto;
 
-import com.community.animal.post.domain.Post;
 import com.community.animal.user.domain.User;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
