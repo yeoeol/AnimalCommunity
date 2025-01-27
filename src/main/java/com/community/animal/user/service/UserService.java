@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.community.animal.user.domain.Role;
 import com.community.animal.user.domain.User;
+import com.community.animal.user.dto.CustomUserDetails;
 import com.community.animal.user.dto.JoinForm;
 import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.repository.UserRepository;
@@ -98,11 +99,6 @@ public class UserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(email).orElseThrow();
-
-		return org.springframework.security.core.userdetails.User.builder()
-			.username(user.getEmail())
-			.password(user.getPassword())
-			.roles(user.getRole().toString())
-			.build();
+		return new CustomUserDetails(user);
 	}
 }

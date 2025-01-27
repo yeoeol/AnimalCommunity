@@ -71,4 +71,8 @@ public class Post {
 		this.postContent = dto.getPostContent() == null ? this.postContent : dto.getPostContent();
 		this.postCategory = dto.getPostCategory() == null ? this.postCategory : dto.getPostCategory();
 	}
+
+	public void updateLikes(long likeCount) {
+		this.postLike = likeCount;
+	}
 }

@@ -9,31 +9,34 @@
 <body>
     <table>
         <tr>
-            <th>id</th>
-            <td th:text="${post.postId}"></td>
+            <th>writer</th>
+            <td th:text="${post.username}"></td>
         </tr>
         <tr>
             <th>title</th>
             <td th:text="${post.postTitle}"></td>
         </tr>
         <tr>
-            <th>writer</th>
-            <td th:text="${post.username}"></td>
-        </tr>
-        <tr>
-            <th>date</th>
-            <td th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <th>contents</th>
+            <td th:text="${post.postContent}"></td>
         </tr>
         <tr>
             <th>hits</th>
             <td th:text="${post.postHit}"></td>
         </tr>
         <tr>
-            <th>contents</th>
-            <td th:text="${post.postContent}"></td>
+            <th>likes</th>
+            <td th:text="${post.postLike}"></td>
+        </tr>
+        <tr>
+            <th>date</th>
+            <td th:text="${#temporals.format(post.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
         <tr>
             <td>
+                <button class="btn btn-primary"
+                        onclick="location.href='post_likes.html'"
+                        th:onclick="|location.href = '@{|/post/${post.postId}/likes|}'|">좋아요</button>
                 <button onclick="location.href='home.html'"
                         th:onclick="|location.href = '@{/post}'|">목록</button>
                 <button onclick="location.href='post_update.html'"

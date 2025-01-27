@@ -25,6 +25,7 @@ public class PostService {
 	@Transactional
 	public Long savePost(PostRequest dto) {
 		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		System.out.println("email = " + email);
 		User user = userRepository.findByEmail(email).orElseThrow();
 
 		Post newPost = Post.builder()
