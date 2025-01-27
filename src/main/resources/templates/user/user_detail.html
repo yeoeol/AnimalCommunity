@@ -15,7 +15,6 @@
                 <div class="card-body">
                     <p class="mb-2"><strong>Username:</strong> <span th:text="${user.username}"></span></p>
                     <p class="mb-2"><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-                    <p class="mb-2"><strong>Role:</strong> <span th:text="${user.role}"></span></p>
                     <p class="mb-2"><strong>Create Date:</strong> <span th:text="${#temporals.format(user.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
                 </div>
                 <div class="card-footer text-center">

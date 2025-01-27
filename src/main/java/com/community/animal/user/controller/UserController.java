@@ -15,6 +15,7 @@ import com.community.animal.post.dto.PostResponse;
 import com.community.animal.user.domain.User;
 import com.community.animal.user.dto.LoginForm;
 import com.community.animal.user.dto.JoinForm;
+import com.community.animal.user.dto.UserProfileDTO;
 import com.community.animal.user.dto.UserUpdateForm;
 import com.community.animal.user.service.UserService;
 
@@ -88,7 +89,7 @@ public class UserController {
 			.getName();
 		User findUser = userService.findUserByEmail(sessionEmail);
 
-		model.addAttribute("user", findUser);
+		model.addAttribute("user", new UserProfileDTO(findUser));
 		return "user/user_detail";
 	}
 
