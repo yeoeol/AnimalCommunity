@@ -40,13 +40,7 @@ public class UserController {
 			return "user/joinForm";
 		}
 
-		User user = User.builder()
-			.email(joinForm.getEmail())
-			.username(joinForm.getUsername())
-			.password(joinForm.getPassword())
-			.build();
-
-		userService.join(user);
+		userService.join(joinForm);
 		return "redirect:/post";
 	}
 
@@ -55,37 +49,37 @@ public class UserController {
 		return "user/loginForm";
 	}
 
-	@PostMapping("/login")
-	public String login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
-		if (bindingResult.hasErrors()) {
-			return "user/loginForm";
-		}
+	// @PostMapping("/login")
+	// public String login(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
+	// 	if (bindingResult.hasErrors()) {
+	// 		return "user/loginForm";
+	// 	}
+	//
+	// 	User loginUser = userService.login(loginForm.getEmail(), loginForm.getPassword());
+	//
+	// 	if (loginUser == null) {
+	// 		// 아이디 또는 비밀번호가 맞지 않음
+	// 		bindingResult.reject("loginFail", "이메일 또는 비밀번호가 맞지 않습니다.");
+	// 		return "user/loginForm";
+	// 	}
+	//
+	// 	// 로그인 성공 처리
+	// 	//세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
+	// 	HttpSession session = request.getSession();
+	// 	//세션에 로그인 회원 정보 보관
+	// 	session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
+	//
+	// 	return "redirect:/post";
+	// }
 
-		User loginUser = userService.login(loginForm.getEmail(), loginForm.getPassword());
-
-		if (loginUser == null) {
-			// 아이디 또는 비밀번호가 맞지 않음
-			bindingResult.reject("loginFail", "이메일 또는 비밀번호가 맞지 않습니다.");
-			return "user/loginForm";
-		}
-
-		// 로그인 성공 처리
-		//세션이 있으면 있는 세션 반환, 없으면 신규 세션을 생성
-		HttpSession session = request.getSession();
-		//세션에 로그인 회원 정보 보관
-		session.setAttribute(SessionConst.LOGIN_MEMBER, loginUser);
-
-		return "redirect:/post";
-	}
-
-	@PostMapping("/logout")
-	public String logout(HttpServletRequest request) {
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.invalidate();
-		}
-		return "redirect:/post";
-	}
+	// @PostMapping("/logout")
+	// public String logout(HttpServletRequest request) {
+	// 	HttpSession session = request.getSession(false);
+	// 	if (session != null) {
+	// 		session.invalidate();
+	// 	}
+	// 	return "redirect:/post";
+	// }
 
 	@GetMapping("/profile")
 	public String profile(HttpServletRequest request, Model model) {
@@ -98,8 +92,8 @@ public class UserController {
 	@GetMapping("/modify/{id}")
 	public String updateForm(@PathVariable Long id, Model model) {
 		User findUser = userService.findUserById(id);
-		UserUpdateForm updateForm = userService.toDetailUserResponse(findUser);
-		model.addAttribute("user", updateForm);
+
+		model.addAttribute("user", new UserUpdateForm(findUser));
 		return "user/user_update";
 	}
 

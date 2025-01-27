@@ -1,5 +1,8 @@
 package com.community.animal.user.dto;
 
+import com.community.animal.post.domain.Post;
+import com.community.animal.user.domain.User;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +16,9 @@ public class UserUpdateForm {
 	private String email;
 	private String password;
 
-	@Builder
-	public UserUpdateForm(String username, String email, String password) {
-		this.username = username;
-		this.email = email;
-		this.password = password;
+	public UserUpdateForm(User user) {
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
 	}
 }

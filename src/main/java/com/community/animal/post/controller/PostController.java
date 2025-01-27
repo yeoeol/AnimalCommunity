@@ -1,6 +1,7 @@
 package com.community.animal.post.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,9 +31,13 @@ public class PostController {
 
 	@GetMapping
 	public String posts(Model model) {
-		List<PostResponse> posts = postService.getAllPosts();
+		List<Post> postList = postService.getAllPosts();
 
-		model.addAttribute("posts", posts);
+		List<PostResponse> result = postList.stream()
+				.map(p -> new PostResponse(p))
+				.collect(Collectors.toList());
+
+		model.addAttribute("posts", result);
 		return "home";
 	}
 
@@ -61,18 +66,16 @@ public class PostController {
 	public String postDetail(@PathVariable Long id, Model model) {
 		postService.updateHits(id);
 		Post findPost = postService.findPostById(id);
-		PostResponse postResponse = postService.toDetailPostResponse(findPost);
 
-		model.addAttribute("post", postResponse);
-
+		model.addAttribute("post", new PostResponse(findPost));
 		return "post/post_detail";
 	}
 
 	@GetMapping("/modify/{id}")
 	public String updateForm(@PathVariable Long id, Model model) {
 		Post findPost = postService.findPostById(id);
-		PostResponse postResponse = postService.toDetailPostResponse(findPost);
-		model.addAttribute("postUpdate", postResponse);
+
+		model.addAttribute("postUpdate", new PostResponse(findPost));
 		return "post/post_update";
 	}
 

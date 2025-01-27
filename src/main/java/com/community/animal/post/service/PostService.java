@@ -64,34 +64,7 @@ public class PostService {
 		postRepository.deleteById(id);
 	}
 
-	public List<PostResponse> getAllPosts() {
-		return postRepository.findAll().stream()
-			.map(p -> toHomePostResponse(p))
-			.collect(Collectors.toList());
-	}
-
-	public PostResponse toHomePostResponse(Post post) {
-		return PostResponse.builder()
-			.postId(post.getPostId())
-			.postTitle(post.getPostTitle())
-			.username(post.getUser().getUsername())
-			.postLike(post.getPostLike())
-			.postHit(post.getPostHit())
-			.regDate(post.getRegDate())
-			.build();
-	}
-
-	public PostResponse toDetailPostResponse(Post post) {
-		User user = post.getUser();
-
-		return PostResponse.builder()
-			.postId(post.getPostId())
-			.postTitle(post.getPostTitle())
-			.username(user.getUsername())
-			.regDate(post.getRegDate())
-			.postHit(post.getPostHit())
-			.postContent(post.getPostContent())
-			.postCategory(post.getPostCategory())
-			.build();
+	public List<Post> getAllPosts() {
+		return postRepository.findAll();
 	}
 }
