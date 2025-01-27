@@ -9,14 +9,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserUpdateForm {
-	private Long userId;
 	private String username;
 	private String email;
 	private String password;
 
 	@Builder
-	public UserUpdateForm(Long userId, String username, String email, String password) {
-		this.userId = userId;
+	public UserUpdateForm(String username, String email, String password) {
 		this.username = username;
 		this.email = email;
 		this.password = password;

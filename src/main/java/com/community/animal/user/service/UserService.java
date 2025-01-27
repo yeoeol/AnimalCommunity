@@ -59,11 +59,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	@Transactional
-	public void update(Long id, UserUpdateForm updateForm) {
+	public void update(Long id, UserUpdateForm dto) {
 		User user = findUserById(id);
-		user.setUsername(updateForm.getUsername());
-		user.setEmail(updateForm.getEmail());
-		user.setPassword(updateForm.getPassword());
+		user.update(dto);
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class Post {
 
 	public void update(PostRequest dto) {
 		this.postTitle = dto.getPostTitle() == null ? this.postTitle : dto.getPostTitle();
-		this.postContent = dto.getPostTitle() == null ? this.postContent : dto.getPostContent();
-		this.postCategory = dto.getPostTitle() == null ? this.postCategory : dto.getPostCategory();
+		this.postContent = dto.getPostContent() == null ? this.postContent : dto.getPostContent();
+		this.postCategory = dto.getPostCategory() == null ? this.postCategory : dto.getPostCategory();
 	}
 }
