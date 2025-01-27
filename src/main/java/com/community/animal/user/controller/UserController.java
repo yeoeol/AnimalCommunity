@@ -1,5 +1,6 @@
 package com.community.animal.user.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,17 +25,16 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/user")
 public class UserController {
 
 	private final UserService userService;
 
-	@GetMapping("/join")
+	@GetMapping("/user/join")
 	public String joinForm(@ModelAttribute JoinForm joinForm) {
 		return "user/joinForm";
 	}
 
-	@PostMapping("/join")
+	@PostMapping("/user/join")
 	public String join(@Valid @ModelAttribute JoinForm joinForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "user/joinForm";
@@ -81,30 +81,38 @@ public class UserController {
 	// 	return "redirect:/post";
 	// }
 
-	@GetMapping("/profile")
-	public String profile(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("loginUser");
-		model.addAttribute("user", user);
+	@GetMapping("/user/profile")
+	public String profile(Model model) {
+		// 현재 로그인 되어 있는 유저의 email
+		String sessionEmail = SecurityContextHolder.getContext().getAuthentication()
+			.getName();
+		User findUser = userService.findUserByEmail(sessionEmail);
+
+		model.addAttribute("user", findUser);
 		return "user/user_detail";
 	}
 
-	@GetMapping("/modify/{id}")
+	@GetMapping("/user/modify/{id}")
 	public String updateForm(@PathVariable Long id, Model model) {
+		// 접근 권한 확인
+		if (!userService.isAccess(id)) {
+			return "redirect:/login";
+		}
+
 		User findUser = userService.findUserById(id);
 
 		model.addAttribute("user", new UserUpdateForm(findUser));
 		return "user/user_update";
 	}
 
-	@PostMapping("/modify/{id}")
-	public String update(HttpServletRequest request, @PathVariable Long id, @ModelAttribute UserUpdateForm updateForm, Model model) {
+	@PostMapping("/user/modify/{id}")
+	public String update(@PathVariable Long id, @ModelAttribute UserUpdateForm updateForm, Model model) {
+		// 접근 권한 확인
+		if (!userService.isAccess(id)) {
+			return "redirect:/login";
+		}
+
 		userService.update(id, updateForm);
-		User user = userService.findUserById(id);
-
-		HttpSession session = request.getSession();
-		session.setAttribute(SessionConst.LOGIN_MEMBER, user);
-
 		return "redirect:/user/profile";
 	}
 }

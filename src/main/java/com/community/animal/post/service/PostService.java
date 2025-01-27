@@ -3,6 +3,7 @@ package com.community.animal.post.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,22 +25,21 @@ public class PostService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public Long savePost(PostRequest postRequest, Long loginUserId) {
-		User loginUser = userRepository.findById(loginUserId)
-			.orElse(null);
+	public Long savePost(PostRequest dto) {
+		String email = SecurityContextHolder.getContext().getAuthentication().getName();
+		User user = userRepository.findByEmail(email).orElseThrow();
 
-		Post saveEntity = Post.builder()
-			.user(loginUser)
-			.postTitle(postRequest.getPostTitle())
-			.postContent(postRequest.getPostContent())
-			.postCategory(postRequest.getPostCategory())
-			.postHit(0L)
+		Post newPost = Post.builder()
+			.postTitle(dto.getPostTitle())
+			.postContent(dto.getPostContent())
+			.postCategory(dto.getPostCategory())
 			.postLike(0L)
+			.postHit(0L)
+			.user(user)
 			.build();
+		postRepository.save(newPost);
 
-		Post savedPost = postRepository.save(saveEntity);
-
-		return savedPost.getPostId();
+		return newPost.getPostId();
 	}
 
 	public Post findPostById(Long id) {
@@ -66,5 +66,31 @@ public class PostService {
 
 	public List<Post> getAllPosts() {
 		return postRepository.findAll();
+	}
+
+	// 유저 접근 권한 체크
+	public Boolean isAccess(Long id) {
+		// 현재 로그인 되어 있는 유저의 email
+		String sessionEmail = SecurityContextHolder.getContext().getAuthentication()
+			.getName();
+		System.out.println(sessionEmail);
+
+		// 현재 로그인 되어 있는 유저의 role
+		String sessionRole = SecurityContextHolder.getContext().getAuthentication()
+			.getAuthorities().iterator().next().getAuthority();
+
+		// 수직적으로 ADMIN이면 무조건 접근 가능
+		if ("ROLE_ADMIN".equals(sessionRole)) {
+			return true;
+		}
+
+		// 특정 게시글 id에 대해 본인이 작성 했는지 확인
+		String postEmail = postRepository.findById(id).orElseThrow()
+			.getUser().getEmail();
+		if (sessionEmail.equals(postEmail)) {
+			return true;
+		}
+
+		return false;
 	}
 }

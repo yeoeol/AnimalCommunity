@@ -10,15 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.community.animal.post.domain.Post;
 import com.community.animal.post.dto.PostRequest;
 import com.community.animal.post.dto.PostResponse;
 import com.community.animal.post.service.PostService;
-import com.community.animal.user.controller.SessionConst;
-import com.community.animal.user.domain.User;
-import com.community.animal.user.dto.LoginForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,23 +38,13 @@ public class PostController {
 	}
 
 	@GetMapping("/save")
-	public String uploadForm(
-		@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model) {
-
-		if (loginUser == null) {
-			model.addAttribute("loginForm", new LoginForm());
-			return "redirect:/user/login";
-		}
-
+	public String createPostForm() {
 		return "post/post_create";
 	}
 
 	@PostMapping("/save")
-	public String upload(
-		@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser,
-		@ModelAttribute PostRequest postRequest) {
-
-		postService.savePost(postRequest, loginUser.getUserId());
+	public String createPost(@ModelAttribute PostRequest postRequest) {
+		postService.savePost(postRequest);
 		return "redirect:/post";
 	}
 
@@ -73,21 +59,33 @@ public class PostController {
 
 	@GetMapping("/modify/{id}")
 	public String updateForm(@PathVariable Long id, Model model) {
-		Post findPost = postService.findPostById(id);
+		// 접근 권한 확인
+		if (!postService.isAccess(id)) {
+			return "redirect:/post";
+		}
 
-		model.addAttribute("postUpdate", new PostResponse(findPost));
+		model.addAttribute("postUpdate", new PostResponse(postService.findPostById(id)));
 		return "post/post_update";
 	}
 
 	@PostMapping("/modify/{id}")
-	public String update(@PathVariable Long id, @ModelAttribute PostRequest postRequest, Model model) {
+	public String update(@PathVariable Long id, @ModelAttribute PostRequest postRequest) {
+		// 접근 권한 확인
+		if (!postService.isAccess(id)) {
+			return "redirect:/post";
+		}
+
 		postService.update(id, postRequest);
 		return "redirect:/post/"+id;
 	}
 
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable Long id) {
-		postService.delete(id);
+		// 접근 권한 확인
+		if (!postService.isAccess(id)) {
+			postService.delete(id);
+		}
+
 		return "redirect:/post";
 	}
 }

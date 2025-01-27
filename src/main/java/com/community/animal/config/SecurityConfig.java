@@ -24,15 +24,15 @@ public class SecurityConfig {
 
 		http
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/post").permitAll()
+				.requestMatchers("/post", "/login").permitAll()
 				.requestMatchers("/post/**").hasRole("USER")
-				.requestMatchers("/user/logout", "/user/profile", "/user/modify/**").hasRole("USER")
+				.requestMatchers("/user/profile", "/user/modify/**").hasRole("USER")
 				.requestMatchers("/user/**").permitAll()
 			);
 
 		http
 			.formLogin(form -> form
-				.loginPage("/user/login")
+				.loginPage("/login")
 				.usernameParameter("email")
 				.defaultSuccessUrl("/post")
 			);

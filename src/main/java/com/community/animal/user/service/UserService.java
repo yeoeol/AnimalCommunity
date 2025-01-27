@@ -3,6 +3,7 @@ package com.community.animal.user.service;
 
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,11 +59,42 @@ public class UserService implements UserDetailsService {
 			.orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
 	}
 
+	public User findUserByEmail(String email) {
+		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new IllegalStateException("없는 유저입니다."));
+	}
+
 
 	@Transactional
 	public void update(Long id, UserUpdateForm dto) {
 		User user = findUserById(id);
 		user.update(dto);
+	}
+
+	// 유저 접근 권한 체크
+	public Boolean isAccess(Long id) {
+		// 현재 로그인 되어 있는 유저의 email
+		String sessionEmail = SecurityContextHolder.getContext().getAuthentication()
+			.getName();
+		System.out.println(sessionEmail);
+
+		// 현재 로그인 되어 있는 유저의 role
+		String sessionRole = SecurityContextHolder.getContext().getAuthentication()
+			.getAuthorities().iterator().next().getAuthority();
+
+		// 수직적으로 ADMIN이면 무조건 접근 가능
+		if ("ROLE_ADMIN".equals(sessionRole)) {
+			return true;
+		}
+
+		// 특정 게시글 id에 대해 본인이 작성 했는지 확인
+		String postEmail = userRepository.findById(id).orElseThrow()
+			.getEmail();
+		if (sessionEmail.equals(postEmail)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
