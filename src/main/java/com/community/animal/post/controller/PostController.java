@@ -16,6 +16,9 @@ import com.community.animal.post.dto.PostRequest;
 import com.community.animal.post.dto.PostResponse;
 import com.community.animal.post.service.PostService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -49,12 +52,45 @@ public class PostController {
 	}
 
 	@GetMapping("/{id}")
-	public String postDetail(@PathVariable Long id, Model model) {
-		postService.updateHits(id);
-		Post findPost = postService.findPostById(id);
-
+	public String postDetail(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long postId, Model model) {
+		addHits(request, response, postId);
+		Post findPost = postService.findPostById(postId);
 		model.addAttribute("post", new PostResponse(findPost));
 		return "post/post_detail";
+	}
+
+	private void addHits(HttpServletRequest request, HttpServletResponse response, Long postId) {
+		Cookie oldCookie = findCookie(request, "post_hit");
+		if (oldCookie != null) {
+			if (!oldCookie.getValue().contains("["+postId+"]")) {
+				postService.updateHits(postId);
+				oldCookie.setValue(oldCookie.getValue() + "["+postId+"]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(-1);
+				response.addCookie(oldCookie);
+			}
+		}
+		else {
+			postService.updateHits(postId);
+			Cookie newCookie = new Cookie("post_hit", "["+postId+"]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(-1);
+			response.addCookie(newCookie);
+		}
+	}
+
+	private Cookie findCookie(HttpServletRequest request, String  cookieName) {
+		Cookie oldCookie = null;
+
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(cookieName)) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		return oldCookie;
 	}
 
 	@GetMapping("/modify/{id}")

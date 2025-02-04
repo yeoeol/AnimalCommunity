@@ -47,8 +47,8 @@ public class PostService {
 	}
 
 	@Transactional
-	public void updateHits(Long id) {
-		Post post = findPostById(id);
+	public void updateHits(Long postId) {
+		Post post = findPostById(postId);
 		post.addPostHit();
 	}
 
