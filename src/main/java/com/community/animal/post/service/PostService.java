@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.community.animal.post.domain.Post;
+import com.community.animal.post.domain.PostCategory;
 import com.community.animal.post.dto.PostRequest;
 import com.community.animal.post.repository.PostRepository;
 import com.community.animal.user.domain.User;
@@ -91,5 +92,9 @@ public class PostService {
 		}
 
 		return false;
+	}
+
+	public List<Post> getPostsByPostCategory(PostCategory postCategory) {
+		return postRepository.findAllByPostCategory(postCategory);
 	}
 }

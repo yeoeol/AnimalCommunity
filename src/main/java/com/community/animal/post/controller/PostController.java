@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.community.animal.post.domain.Post;
+import com.community.animal.post.domain.PostCategory;
 import com.community.animal.post.dto.PostRequest;
 import com.community.animal.post.dto.PostResponse;
 import com.community.animal.post.service.PostService;
@@ -23,14 +25,23 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
 
 	private final PostService postService;
 
 	@GetMapping
-	public String posts(Model model) {
-		List<Post> postList = postService.getAllPosts();
+	public String posts(
+		@RequestParam(value = "postCategory", required = false) PostCategory postCategory,
+		Model model) {
+
+		List<Post> postList = null;
+		if (postCategory != null) {
+			postList = postService.getPostsByPostCategory(postCategory);
+		}
+		else {
+			postList = postService.getAllPosts();
+		}
 
 		List<PostResponse> result = postList.stream()
 				.map(p -> new PostResponse(p))
@@ -48,7 +59,7 @@ public class PostController {
 	@PostMapping("/save")
 	public String createPost(@ModelAttribute PostRequest postRequest) {
 		postService.savePost(postRequest);
-		return "redirect:/post";
+		return "redirect:/posts";
 	}
 
 	@GetMapping("/{id}")
@@ -97,7 +108,7 @@ public class PostController {
 	public String updateForm(@PathVariable Long id, Model model) {
 		// 접근 권한 확인
 		if (!postService.isAccess(id)) {
-			return "redirect:/post";
+			return "redirect:/posts";
 		}
 
 		model.addAttribute("postUpdate", new PostResponse(postService.findPostById(id)));
@@ -108,11 +119,11 @@ public class PostController {
 	public String update(@PathVariable Long id, @ModelAttribute PostRequest postRequest) {
 		// 접근 권한 확인
 		if (!postService.isAccess(id)) {
-			return "redirect:/post";
+			return "redirect:/posts";
 		}
 
 		postService.update(id, postRequest);
-		return "redirect:/post/"+id;
+		return "redirect:/posts/"+id;
 	}
 
 	@GetMapping("/delete/{id}")
@@ -122,6 +133,6 @@ public class PostController {
 			postService.delete(id);
 		}
 
-		return "redirect:/post";
+		return "redirect:/posts";
 	}
 }

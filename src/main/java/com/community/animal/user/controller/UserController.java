@@ -37,7 +37,7 @@ public class UserController {
 		}
 
 		userService.join(joinForm);
-		return "redirect:/post";
+		return "redirect:/posts";
 	}
 
 	@GetMapping("/login")

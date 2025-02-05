@@ -36,13 +36,13 @@
             <td>
                 <button class="btn btn-primary"
                         onclick="location.href='post_likes.html'"
-                        th:onclick="|location.href = '@{|/post/${post.postId}/likes|}'|">좋아요</button>
+                        th:onclick="|location.href = '@{|/posts/${post.postId}/likes|}'|">좋아요</button>
                 <button onclick="location.href='home.html'"
-                        th:onclick="|location.href = '@{/post}'|">목록</button>
+                        th:onclick="|location.href = '@{/posts}'|">목록</button>
                 <button onclick="location.href='post_update.html'"
-                        th:onclick="|location.href = '@{|/post/modify/${post.postId}|}'|">수정</button>
+                        th:onclick="|location.href = '@{|/posts/modify/${post.postId}|}'|">수정</button>
                 <button onclick="location.href='home.html'"
-                        th:onclick="|location.href='@{|/post/delete/${post.postId}|}'|">삭제</button>
+                        th:onclick="|location.href='@{|/posts/delete/${post.postId}|}'|">삭제</button>
             </td>
         </tr>
     </table>

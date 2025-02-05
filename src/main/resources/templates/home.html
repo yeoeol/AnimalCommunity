@@ -17,8 +17,8 @@
             </thead>
             <tbody>
                 <tr th:each="post : ${posts}">
-                    <td><a href="post_detail.html" th:href="@{|/post/${post.postId}|}" th:text="${post.postId}">1</a></td>
-                    <td><a href="post_detail.html" th:href="@{|/post/${post.postId}|}" th:text="${post.postTitle}">제목</a></td>
+                    <td><a href="post_detail.html" th:href="@{|/posts/${post.postId}|}" th:text="${post.postId}">1</a></td>
+                    <td><a href="post_detail.html" th:href="@{|/posts/${post.postId}|}" th:text="${post.postTitle}">제목</a></td>
                     <td th:text="${post.username}">작성자</td>
                     <td th:text="${post.postLike}">0</td>
                     <td th:text="${post.postHit}">0</td>

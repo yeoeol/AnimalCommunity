@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.community.animal.post.domain.Post;
+import com.community.animal.post.domain.PostCategory;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 	@EntityGraph(attributePaths = {"user"})
@@ -14,4 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 	@EntityGraph(attributePaths = {"user"})
 	Optional<Post> findById(Long id);
+
+	@EntityGraph(attributePaths = {"user"})
+	List<Post> findAllByPostCategory(PostCategory postCategory);
 }

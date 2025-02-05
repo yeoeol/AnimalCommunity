@@ -8,10 +8,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#" th:href="@{/post}">홈</a>
+                        <a class="nav-link active" aria-current="page" href="#" th:href="@{/posts}">홈</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" th:href="@{/post/save}">글쓰기</a>
+                        <a class="nav-link" href="#" th:href="@{/posts/save}">글쓰기</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" th:href="@{/login}">로그인</a>
@@ -23,6 +23,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" th:href="@{/user/profile}">회원정보</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/posts(postCategory='DOG')}">DOG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/posts(postCategory='CAT')}">CAT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{/posts(postCategory='ETC')}">ETC</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">

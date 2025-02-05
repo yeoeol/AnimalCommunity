@@ -16,10 +16,10 @@ public class LikeController {
 
 	private final LikeService likeService;
 
-	@GetMapping("/post/{id}/likes")
+	@GetMapping("/posts/{id}/likes")
 	public String addLike(@PathVariable("id") Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		Long userId = userDetails.getUserId();
 		likeService.likePost(postId, userId);
-		return "redirect:/post/"+postId;
+		return "redirect:/posts/"+postId;
 	}
 }

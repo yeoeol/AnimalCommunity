@@ -35,8 +35,8 @@ public class SecurityConfig {
 
 		http
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/post", "/login").permitAll()
-				.requestMatchers("/post/**").hasRole("USER")
+				.requestMatchers("/posts", "/posts\\?postCategory=.*","/login").permitAll()
+				.requestMatchers("/posts/**").hasRole("USER")
 				.requestMatchers("/user/profile", "/user/modify/**").hasRole("USER")
 				.requestMatchers("/user/**").permitAll()
 			);
@@ -45,7 +45,7 @@ public class SecurityConfig {
 			.formLogin(form -> form
 				.loginPage("/login")
 				.usernameParameter("email")
-				.defaultSuccessUrl("/post")
+				.defaultSuccessUrl("/posts")
 			);
 
 		return http.build();
