@@ -36,8 +36,8 @@
                         <a class="nav-link" href="#" th:href="@{/posts(postCategory='ETC')}">ETC</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex" role="search" th:action="@{/posts}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" name="postTitle">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>

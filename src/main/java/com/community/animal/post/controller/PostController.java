@@ -33,11 +33,15 @@ public class PostController {
 	@GetMapping
 	public String posts(
 		@RequestParam(value = "postCategory", required = false) PostCategory postCategory,
+		@RequestParam(value = "postTitle", required = false) String postTitle,
 		Model model) {
 
 		List<Post> postList = null;
 		if (postCategory != null) {
 			postList = postService.getPostsByPostCategory(postCategory);
+		}
+		else if (postTitle != null) {
+			postList = postService.getPostsByPostTitle(postTitle);
 		}
 		else {
 			postList = postService.getAllPosts();

@@ -97,4 +97,8 @@ public class PostService {
 	public List<Post> getPostsByPostCategory(PostCategory postCategory) {
 		return postRepository.findAllByPostCategory(postCategory);
 	}
+
+	public List<Post> getPostsByPostTitle(String postTitle) {
+		return postRepository.findAllByPostTitleContaining(postTitle);
+	}
 }

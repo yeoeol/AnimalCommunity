@@ -18,4 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 	@EntityGraph(attributePaths = {"user"})
 	List<Post> findAllByPostCategory(PostCategory postCategory);
+
+	@EntityGraph(attributePaths = {"user"})
+	List<Post> findAllByPostTitleContaining(String postTitle);
 }
