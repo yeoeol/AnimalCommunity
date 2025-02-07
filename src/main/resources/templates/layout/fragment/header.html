@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav th:fragment="headerFragment" class="navbar navbar-expand-lg bg-dark navbar-dark">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,10 +14,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#" th:href="@{/posts/save}">글쓰기</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- 로그인하지 않은 사용자에게만 로그인 버튼 표시 -->
+                    <li class="nav-item" sec:authorize="isAnonymous()">
                         <a class="nav-link" href="#" th:href="@{/login}">로그인</a>
                     </li>
-                    <li class="nav-item">
+                    <!-- 로그인한 사용자에게만 로그아웃 버튼 표시 -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
                         <form action="/logout" method="post">
                             <button type="submit" class="nav-link">로그아웃</button>
                         </form>
