@@ -1,7 +1,7 @@
 package com.community.animal.post.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,8 +64,8 @@ public class PostService {
 		postRepository.deleteById(id);
 	}
 
-	public List<Post> getAllPosts() {
-		return postRepository.findAll();
+	public Page<Post> getAllPosts(Pageable pageable) {
+		return postRepository.findAll(pageable);
 	}
 
 	// 유저 접근 권한 체크
@@ -94,11 +94,11 @@ public class PostService {
 		return false;
 	}
 
-	public List<Post> getPostsByPostCategory(PostCategory postCategory) {
-		return postRepository.findAllByPostCategory(postCategory);
+	public Page<Post> getPostsByPostCategory(PostCategory postCategory, Pageable pageable) {
+		return postRepository.findAllByPostCategory(postCategory, pageable);
 	}
 
-	public List<Post> getPostsByPostTitle(String postTitle) {
-		return postRepository.findAllByPostTitleContaining(postTitle);
+	public Page<Post> getPostsByPostTitle(String postTitle, Pageable pageable) {
+		return postRepository.findAllByPostTitleContaining(postTitle, pageable);
 	}
 }

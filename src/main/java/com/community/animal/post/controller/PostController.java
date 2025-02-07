@@ -1,8 +1,9 @@
 package com.community.animal.post.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,23 +35,24 @@ public class PostController {
 	public String posts(
 		@RequestParam(value = "postCategory", required = false) PostCategory postCategory,
 		@RequestParam(value = "postTitle", required = false) String postTitle,
+		@PageableDefault(size = 3, sort = "regDate", direction = Sort.Direction.DESC) Pageable pageable,
 		Model model) {
 
-		List<Post> postList = null;
+		Page<Post> postList = null;
 		if (postCategory != null) {
-			postList = postService.getPostsByPostCategory(postCategory);
+			postList = postService.getPostsByPostCategory(postCategory, pageable);
 		}
 		else if (postTitle != null) {
-			postList = postService.getPostsByPostTitle(postTitle);
+			postList = postService.getPostsByPostTitle(postTitle, pageable);
 		}
 		else {
-			postList = postService.getAllPosts();
+			postList = postService.getAllPosts(pageable);
 		}
 
-		List<PostResponse> result = postList.stream()
-				.map(p -> new PostResponse(p))
-				.collect(Collectors.toList());
-
+		// List<PostResponse> result = postList.stream()
+		// 		.map(p -> new PostResponse(p))
+		// 		.collect(Collectors.toList());
+		Page<PostResponse> result = postList.map(PostResponse::new);
 		model.addAttribute("posts", result);
 		return "home";
 	}
