@@ -26,4 +26,29 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- 페이징 -->
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <!-- 이전 버튼 -->
+                <li class="page-item" th:classappend="${posts.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${posts.number - 1}|}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- 페이지 번호 -->
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}"
+                    th:classappend="${i == posts.number} ? 'active'">
+                    <a class="page-link" th:href="@{|?page=${i}|}" th:text="${i + 1}"></a>
+                </li>
+
+                <!-- 다음 버튼 -->
+                <li class="page-item" th:classappend="${posts.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${posts.number + 1}|}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
