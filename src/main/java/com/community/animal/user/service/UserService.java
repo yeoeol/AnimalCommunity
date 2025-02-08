@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
 	public void update(Long id, UserUpdateForm dto) {
 		User user = findUserById(id);
 		String newEncodePw = bCryptPasswordEncoder.encode(dto.getPassword());
-		user.update(dto.getUsername(), newEncodePw, dto.getEmail());
+		user.update(dto.getUsername(), newEncodePw);
 	}
 
 	// 유저 접근 권한 체크

@@ -12,12 +12,14 @@ import lombok.Setter;
 public class UserProfileDTO {
 	private Long userId;
 	private String username;
+	private String password;
 	private String email;
 	private LocalDateTime createDate;
 
 	public UserProfileDTO(User user) {
 		this.userId = user.getUserId();
 		this.username = user.getUsername();
+		this.password = user.getPassword();
 		this.email = user.getEmail();
 		this.createDate = user.getCreateDate();
 	}

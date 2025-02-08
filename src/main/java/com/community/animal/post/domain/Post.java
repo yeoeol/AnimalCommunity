@@ -3,13 +3,17 @@ package com.community.animal.post.domain;
 import static jakarta.persistence.FetchType.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.community.animal.like.domain.Like;
 import com.community.animal.post.dto.PostRequest;
 import com.community.animal.user.domain.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -20,6 +24,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +56,9 @@ public class Post {
 
 	@CreatedDate
 	private LocalDateTime regDate;
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	private List<Like> likes = new ArrayList<>();
 
 	@Builder
 	public Post(String postTitle, String postContent, Long postLike, Long postHit, PostCategory postCategory, User user) {

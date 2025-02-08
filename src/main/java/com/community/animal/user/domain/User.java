@@ -48,9 +48,8 @@ public class User {
 		this.role = role;
 	}
 
-	public void update(String username, String password, String email) {
+	public void update(String username, String password) {
 		this.username = username == null ? this.username : username;
 		this.password = password == null ? this.password : password;
-		this.email = email == null ? this.email : email;
 	}
 }

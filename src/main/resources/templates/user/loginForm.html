@@ -4,7 +4,7 @@
     <title>로그인</title>
 </head>
 <div layout:fragment="content">
-    <form th:action method="POST">
+    <form th:action="@{/loginProc}" method="POST">
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" name="email">

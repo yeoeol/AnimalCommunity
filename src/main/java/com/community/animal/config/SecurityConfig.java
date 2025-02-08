@@ -44,6 +44,7 @@ public class SecurityConfig {
 		http
 			.formLogin(form -> form
 				.loginPage("/login")
+				.loginProcessingUrl("/loginProc")
 				.usernameParameter("email")
 				.defaultSuccessUrl("/posts")
 			);

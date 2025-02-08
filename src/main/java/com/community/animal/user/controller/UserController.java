@@ -97,7 +97,7 @@ public class UserController {
 
 		User findUser = userService.findUserById(id);
 
-		model.addAttribute("user", new UserUpdateForm(findUser));
+		model.addAttribute("user", new UserProfileDTO(findUser));
 		return "user/user_update";
 	}
 

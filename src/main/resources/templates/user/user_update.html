@@ -19,7 +19,7 @@
                             <input type="text" name="username" th:value="${user.username}">
                         </p>
                         <p class="mb-2"><strong>Email:</strong>
-                            <input type="text" name="email" th:value="${user.email}">
+                            <span th:text="${user.email}"></span>
                         </p>
                         <p class="mb-2"><strong>Password:</strong>
                             <input type="text" name="password" placeholder="새로운 비밀번호">
