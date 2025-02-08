@@ -67,7 +67,8 @@ public class UserService implements UserDetailsService {
 	@Transactional
 	public void update(Long id, UserUpdateForm dto) {
 		User user = findUserById(id);
-		user.update(dto);
+		String newEncodePw = bCryptPasswordEncoder.encode(dto.getPassword());
+		user.update(dto.getUsername(), newEncodePw, dto.getEmail());
 	}
 
 	// 유저 접근 권한 체크

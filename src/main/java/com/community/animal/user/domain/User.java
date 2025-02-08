@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.community.animal.user.dto.UserUpdateForm;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -50,9 +48,9 @@ public class User {
 		this.role = role;
 	}
 
-	public void update(UserUpdateForm dto) {
-		this.username = dto.getUsername() == null ? this.username : dto.getUsername();
-		this.password = dto.getPassword() == null ? this.password : dto.getPassword();
-		this.email = dto.getEmail() == null ? this.email : dto.getEmail();
+	public void update(String username, String password, String email) {
+		this.username = username == null ? this.username : username;
+		this.password = password == null ? this.password : password;
+		this.email = email == null ? this.email : email;
 	}
 }
